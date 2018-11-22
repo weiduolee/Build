@@ -1,0 +1,80 @@
+[Version]
+ffmpeg-3.0.2
+
+[Windows]
+1.Prerequirement
+(1) Got or installed VS2013 or VS2015, MinGW, yasm.exe (http://yasm.tortall.net/)
+
+(2) Put yasm.exe in E:\Build\bin
+
+2. Steps
+(1)Run Developer Command Prompt for VS2013 (VS2015), and run C:\MinGW\msys\1.0\msys.bat in this and it will inherit %PATH% from VS prompt
+
+export PATH="/E/Build/bin":$PATH
+
+(2)Overwrite LIB and INCLUDE in MinGW path style. VS2013 is 12.0, VS2015 is 14,0
+
+export INCLUDE="/C/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/:/C/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0/ucrt/:/C/Program Files (x86)/Windows Kits/8.1/Include/um:/C/Program Files (x86)/Windows Kits/8.1/Include/shared"
+
+export LIB="/C/Program Files (x86)/Microsoft Visual Studio 14.0/VC/lib/:/C/Program Files (x86)/Microsoft SDKs/Windows/v7.1A/Lib/:/C/Program Files (x86)/Windows Kits/10/Lib/10.0.14393.0/ucrt/x86"
+
+In order to find  libx264: install fdk-aac in default path (/usr/local/include, /usr/local/lib  )
+export INCLUDE="/D/GitHub/x264:/usr/local/include":$INCLUDE
+export LIB="/D/GitHub/x264:/usr/local/lib":$LIB
+
+Build ffplay:
+export INCLUDE="/D/x264:/usr/local/include:/E/Projects/SDL/SDL2-2.0.4/include":$INCLUDE
+export LIB="/D/x264:/usr/local/lib:/E/Projects/SDL/SDL2-2.0.4/lib/x86":$LIB
+
+
+(3)Build Configure
+Static Library:
+./configure --toolchain=msvc --arch=x86 --enable-yasm --enable-asm --disable-doc 
+ 
+Enable x264 
+./configure --toolchain=msvc --arch=x86 --enable-yasm --enable-asm --disable-doc --enable-gpl --enable-libx264
+
+Enable fdk-aac:
+--enable-nonfree --enable-libfdk-aac
+
+optimizations is on by default, ms compiler options is _cflags_speed="-O2"
+
+--disable-optimizations  
+disable compiler optimizations , this will make link failed, so chang _cflags_speed to -Od (disable-optimizations ) or comment out cflags_speed.
+
+./configure --toolchain=msvc --arch=x86 --enable-yasm --disable-doc --disable-optimizations --disable-asm
+
+
+(4)make
+
+3.More information
+(1) Default Options:
+build static library, don't build share library:
+  --disable-static         do not build static libraries [no]
+  --enable-shared          build shared libraries [no]
+  
+Worth noting:
+  --enable-avresample      enable libavresample build [no]
+  --enable-librtmp         enable RTMP[E] support via librtmp [no]
+  --enable-libopenh264     enable H.264 encoding via OpenH264 [no]
+  --enable-libx264         enable H.264 encoding via x264 [no]
+  --enable-libx265         enable HEVC encoding via x265 [no]
+  
+  libx264 is gpl and --enable-gpl is not specified.
+  
+error - ffbuild/common.mak:175: *** missing separator.  Stop.
+try:  git config --global core.autocrlf false
+  
+(2)From MSVC 2013 (compiler major version 18) onwards, it does actually support enough of C99 to build ffmpeg. 
+
+5.Usage
+(1)Include ffmpeg headers in externs "C", e.g.
+
+extern "C"
+{
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+}
+
+(2)Add dShow, vfwcap library if needed.
+Strmiids.lib, Vfw32.lib

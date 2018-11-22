@@ -1,0 +1,37 @@
+[Version]
+openssl-1.0.2h
+
+[Windows]
+1.Prerequirement
+(1)Install strawberry-perl (http://strawberryperl.com/)
+(2)Install NASM (http://www.nasm.us/)
+(3)VS2013 or VS2015
+
+2. Steps
+(1)Launch Developer Command Prompt for VS2013
+
+(2)Build configure:
+Static Library: 
+perl Configure VC-WIN32
+
+perl Configure VC-WIN64A
+
+Static Library Debug: 
+perl Configure debug-VC-WIN32 --prefix=D:\Projects\openssl\Build-OpenSSL-VC-32-dbg
+
+MAC:
+./Configure darwin-i386-cc
+
+(3)Make
+Win32:
+ms\do_ms
+ms\do_nasm
+nmake -f ms\nt.mak 
+
+Win64:
+ms\do_win64a
+nmake -f ms\nt.mak
+
+(4)Install if you want
+nmake -f ms\nt.mak install  
+

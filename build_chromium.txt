@@ -1,0 +1,16 @@
+cd chromium\src
+
+1. git rebase-update
+
+2. gclient sync
+
+3. Enable ffmpeg
+D:\chromium\src\build\config\features.gni
+Line 38:   proprietary_codecs = true
+
+D:\chromium\src\third_party\ffmpeg\ffmpeg_options.gni
+Line 34:   ffmpeg_branding = "Chrome"
+
+4. gn gen out/Default
+
+5. ninja -C out\Default chrome

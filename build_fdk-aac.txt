@@ -1,0 +1,19 @@
+[Version]
+Source code from git://github.com/mstorsjo/fdk-aac.git
+
+[Steps]
+(1) Install autoconf, automake, libtool, binutils (this includes ld) in MinGw(MSYS)
+
+(2)Run Developer Command Prompt for VS2013 (VS2015), and run C:\MinGW\msys\1.0\msys.bat in this and it will inherit %PATH% from VS prompt
+
+(3)./autogen.sh
+
+(4) ./configure --disable-shared 
+
+Debug static library: ./configure --disable-shared CXXFLAGS=-Zi
+
+See line 1310 in configure:
+Usage: configure [OPTION]... [VAR=VALUE]...
+
+
+(5)make
