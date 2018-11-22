@@ -1,0 +1,28 @@
+[Version]
+latest version from : git clone http://git.videolan.org/git/x264.git
+
+[Windows]
+1.Prerequirement
+(1) Got or installed VS2013 or VS2015, MinGW, yasm.exe (http://yasm.tortall.net/)
+
+(2) Put yasm.exe in e:\Build\bin
+
+2. Steps
+(1)Run Developer Command Prompt for VS2013 (VS2015), and run C:\MinGW\msys\1.0\msys.bat in this and it will inherit %PATH% from VS prompt
+
+(2)export PATH="/E/Build/bin":$PATH
+
+(3)Build Configure, Must set CC to cl before run configure 
+Static library libx264.lib:  CC=cl ./configure --enable-static  
+
+Debug:
+CC=cl ./configure --enable-static  --enable-debug
+
+Build 64bit:
+CC=cl ./configure --enable-static  --enable-debug  --host=x86_64-pc-mingw32
+
+(4) make
+
+3. More Information
+(1) Microsoft Visual Studio support requires Visual Studio 2013 Update 2 or newer
+(2) --disable-cli : Do not build command line programs, x264.exe.
