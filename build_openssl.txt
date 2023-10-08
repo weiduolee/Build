@@ -8,7 +8,7 @@ openssl-1.0.2h
 (3)VS2013 or VS2015
 
 2. Steps
-(1)Launch Developer Command Prompt for VS2013
+(1)Launch Developer Command Prompt for VS2013 (Launch X64 Command Prompt to build Win64)
 
 (2)Build configure:
 Static Library: 
